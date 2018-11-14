@@ -1,16 +1,26 @@
-<table>
-    <tbody>
-        {% for post in post_list %}
-            <tr>
-                <td>
-                    <a href="{{ post.get_absolute_url }}">
-                        {{ post.title }}
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<hr/>
+{% extends 'blog/layout.html' %}
 
-<a href="{% url 'blog:post_create' %}">포스팅 작성</a>
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered table-hover">
+        <tbody>
+            {% for post in post_list %}
+                <tr>
+                    <td>
+                        <a href="{{ post.get_absolute_url }}">
+                            {{ post.title }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+
+    <a href="{% url 'blog:post_create' %}" class="btn btn-primary">포스팅 작성</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
