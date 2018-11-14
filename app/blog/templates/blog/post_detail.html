@@ -9,6 +9,7 @@
     <li>
         {{ comment.message }}
         &dash; <small>{{ comment.updated_at }}</small>
+        <a href="{% url 'blog:comment_edit' post.pk comment.pk %}">수정</a>
     </li>
 {% endfor %}
 </ul>

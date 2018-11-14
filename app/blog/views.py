@@ -38,3 +38,14 @@ class CommentCreateView(CreateView):
 
 
 comment_create = CommentCreateView.as_view()
+
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    fields = ['message']
+
+    def get_success_url(self):
+        return resolve_url(self.object.post)
+
+
+comment_edit = CommentUpdateView.as_view()
