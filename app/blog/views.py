@@ -49,3 +49,13 @@ class CommentUpdateView(UpdateView):
 
 
 comment_edit = CommentUpdateView.as_view()
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+
+    def get_success_url(self):
+        return resolve_url(self.object.post)
+
+
+comment_delete = CommentDeleteView.as_view()
