@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 from .models import Post
 
 index = ListView.as_view(model=Post, template_name='blog/index.html')
+
+post_create = CreateView.as_view(model=Post, fields='__all__')
 
 post_detail = DetailView.as_view(model=Post)
 
