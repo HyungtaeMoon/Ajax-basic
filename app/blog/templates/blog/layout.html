@@ -1,1 +1,6 @@
 {% extends 'layout.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+{% endblock %}
