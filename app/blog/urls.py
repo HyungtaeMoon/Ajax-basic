@@ -1,4 +1,5 @@
 from django.urls import path
+from django.urls import re_path
 
 from . import views
 
@@ -17,4 +18,5 @@ urlpatterns = [
          views.comment_edit, name='comment_edit'),
     path('<int:post_pk>/comments/<int:pk>/delete/',
          views.comment_delete, name='comment_delete'),
+    re_path(r'^posts\.json/$', views.post_list_json)
 ]
