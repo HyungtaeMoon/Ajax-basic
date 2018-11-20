@@ -1,10 +1,12 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, resolve_url
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from rest_framework import permissions
+from rest_framework.renderers import JSONRenderer
 
 from .models import Post, Comment
-
+from .serializers import PostSerializer
 
 class PostListView(ListView):
     model = Post
@@ -75,9 +77,7 @@ comment_delete = CommentDeleteView.as_view()
 
 def post_list_json(request):
     qs = Post.objects.all()
-
-    post_list = []
-    for post in qs:
-        post_list.append({'id': post.id, 'title': post.title, 'content': post.content})
-    # JsonResponse 의 default는 dict 이기 때문에 False 로 설정
-    return JsonResponse(post_list, safe=False)
+    serializer = PostSerializer(qs, many=True)
+    json_utf8_string = JSONRenderer().render(serializer.data)
+    # content_type 은 명시하는 것일뿐 파일의 형식이 바뀌는 것은 아니다.
+    return HttpResponse(json_utf8_string, content_type='application/json; charset=utf-8')
