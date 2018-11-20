@@ -8,6 +8,11 @@
                .done(function (html) {
                    console.log(html);
                    $('#post-list-wrapper').html(html);
+
+                   var state_obj = {};
+                   var title = '';
+                   var url = "?page=2";
+                   history.pushState(state_obj, title, url)
                })
                .fail(function () {
                    console.log('fail');
