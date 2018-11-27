@@ -37,6 +37,15 @@ $(function() {
     });
 
     $('#load-more-btn').click(load_more);
+
+    $(document).on('click', '#post-list a', function (e) {
+       e.preventDefault();
+        var detail_url = $(this).attr('href');
+        alert(detail_url);
+    });
+
+    $('#post-list a').click(function (e) {
+    });
 });
 </script>
 
