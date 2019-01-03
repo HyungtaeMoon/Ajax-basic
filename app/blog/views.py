@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView, C
 from rest_framework import permissions
 from rest_framework.renderers import JSONRenderer
 
+from .forms import CommentForm
 from .models import Post, Comment
 from .serializers import PostSerializer
 
@@ -55,7 +56,7 @@ post_delete = PostDeleteView.as_view()
 
 class CommentCreateView(CreateView):
     model = Comment
-    fields = ['message']
+    form_class = CommentForm
 
     def form_valid(self, form):
         comment = form.save(commit=False)
@@ -71,7 +72,7 @@ comment_create = CommentCreateView.as_view()
 
 class CommentUpdateView(UpdateView):
     model = Comment
-    fields = ['message']
+    form_class = CommentForm
 
     def get_success_url(self):
         return resolve_url(self.object.post)
