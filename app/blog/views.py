@@ -37,6 +37,13 @@ class PostDetailView(DetailView):
             })
         return super().render_to_response(context)
 
+    def get_context_data(self, **kwargs):
+        # get_context_data 의 context 에 CommentForm 을 정의
+        # 해당 메서드가 없을 경우, 유효하지 않은 폼이라는 에러 메시지 발생
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        return context
+
 
 post_detail = PostDetailView.as_view()
 
