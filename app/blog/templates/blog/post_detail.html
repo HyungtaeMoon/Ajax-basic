@@ -85,7 +85,11 @@ $(function() {
             {% for comment in post.comment_set.all %}
                 <li id="comment-{{ comment.pk }}">
                     {{ comment.message }}
-                    &dash; <small>{{ comment.updated_at }}</small>
+                    &dash;
+                    <a href="{% url "blog:comment_edit" post.pk comment.pk %}">
+                        <small>{{ comment.updated_at }}</small>
+                    </a>
+
                     <a href="{% url 'blog:comment_edit' post.pk comment.pk %}">수정</a>
                     <a href="{% url 'blog:comment_delete' post.pk comment.pk %}"
                         class="ajax-post-confirm"
