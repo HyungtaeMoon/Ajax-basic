@@ -71,24 +71,25 @@ class CommentCreateView(CreateView):
         # return super().form_valid(form)
         response = super().form_valid(form)
 
+        # request 가 ajax 일 때만 처리
         if self.request.is_ajax():
-            return JsonResponse({
-                'id': comment.id,
-                'message': comment.message,
-                'updated_at': comment.updated_at,
-                'edit_url': resolve_url('blog:comment_edit', comment.post.pk, comment.pk),
-                'delete_url': resolve_url('blog:comment_delete', comment.post.pk, comment.pk),
-            })
+            context = {
+                'comment': comment,
+            }
+            return render(self.request, 'blog/_comment.html', context)
 
         return response
 
-    def form_invalid(self, form):
-        if self.request.is_ajax():
-            return JsonResponse(dict(form.errors, is_success=False))
-        return super().form_invalid(form)
-
     def get_success_url(self):
         return resolve_url(self.object.post)
+
+    def get_template_names(self):
+        # ajax 로 처리된 html 과 단순 form 으로 처리하는 두가지 방향
+        if self.request.is_ajax():
+            # ajax 처리를 하면 _comment_form 템플릿으로 처리
+            return ['blog/_comment_form.html']
+        # 그게 아니면 comment_form 템플릿으로 처리
+        return ['blog/comment_form.html']
 
 
 comment_create = CommentCreateView.as_view()
