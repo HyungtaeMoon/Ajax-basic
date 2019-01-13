@@ -7,7 +7,7 @@ from .models import Comment
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['message']
+        fields = ['message', 'photo']
 
     def clean_message(self):
         # CommentForm 에서 작성한 cleaned_data 로 받아 message 변수에 할당
