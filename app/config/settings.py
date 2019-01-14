@@ -21,6 +21,7 @@ STATIC_URL = '/static/'
 
 # STATIC 경로
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
 BOWER_COMPONENTS = os.path.join(BASE_DIR, 'bower_components')
 
 MEDIA_URL = '/media/'

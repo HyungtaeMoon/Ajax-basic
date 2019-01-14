@@ -1,30 +1,43 @@
-{% extends 'blog/layout.html' %}
+{% extends "blog/layout.html" %}
 {% load bootstrap3 %}
 
 {% block extra_body %}
 <script>
 $(function() {
-    $(document).on('click', '.comment-form-btn', function (e) {
+    $(document).on('click', '.comment-form-btn', function(e) {
         e.preventDefault();
 
         var action_url = $(this).attr('href');
+        var target_id = $(this).data('target-id');
 
         $.get(action_url)
-            .done(function (form_html) {
+            .done(function(form_html) {
                 var $modal = $('#comment-form-modal');
                 $modal.find('.modal-body').html(form_html);
                 $form = $modal.find('.modal-body form');
                 $form.attr('action', action_url);
 
+                if ( target_id ) {
+                    $form.attr('data-target-id', target_id); // modal form에 data-target-id를 기록
+                }
+                else {
+                    $form.removeData('target-id'); // modal창이 뜰때마다 form태그가 새로이 지정되어서 불필요
+                }
+
+                $modal.on('shown.bs.modal', function(e) {
+                    $(this).find('textarea:first').focus();
+                });
+
                 $modal.modal();
             })
-            .fail(function (xhr, textStatus, error) {
-                alert('failed: ' + error);
+            .fail(function(xhr, textStatus, error) {
+                alert('failed : ' + error);
             });
+
         // $('#comment-form-modal').modal();
     });
 
-    $(document).on('submit', '#comment-form-modal form', function (e) {
+    $(document).on('submit', '#comment-form-modal form', function(e) {
         e.preventDefault();
 
         var $form = $(this);
@@ -32,34 +45,43 @@ $(function() {
 
         $submit.prop('disabled', true);
 
-        var url = $form.attr('action');
-        var data = $form.serialize();  // url encoded된 데이터
+        $form.ajaxSubmit({
+            success: function(response, statusText, xhr, $form) {
+                var html = response;
 
-        $.post(url, data)
-            .done(function (html) {
                 var $resp = $(html);
+                var target_id = $form.data('target-id');
+
                 console.log(html);
 
-                if ($resp.find('.has-error').length > 0) {
+                if ( $resp.find('.has-error').length > 0 ) {
                     // validation 에러일 경우, 에러 HTML 응답
                     // form 태그의 속성정보는 그대로 유지하고, 필드 HTML 만 변경
                     var fields_html = $resp.html();
                     $('#comment-form-modal .modal-body form').html(fields_html);
                 }
                 else {
-                    $resp.prependTo('#comment-list');
+                    if ( target_id ) {
+                        $('#' + target_id).html($resp.html());
+                    }
+                    else {
+                        $resp.prependTo('#comment-list');
+                    }
+
                     $('#comment-form-modal').modal('hide');
                     $form[0].reset();
                 }
-            })
-            .fail(function (xhr, textStatus, error) {
+            },
+            error: function(xhr, textStatus, error) {
                 alert('failed : ' + error);
-            })
-            .always(function () {
-                $submit.prop('disabled', false);
-            });
+            },
+            complete: function(xhr, textStatus) {
+            }
         });
-    $(document).on('click', 'ajax-post-confirm', function (e) {
+    });
+
+
+    $(document).on('click', '.ajax-post-confirm', function(e) {
         e.preventDefault();
 
         var url = $(this).attr('href');
@@ -67,16 +89,16 @@ $(function() {
         var message = $(this).data('message');
 
         if ( confirm(message) ) {
-            $.pos(url)
-                .done(function () {
+            $.post(url)
+                .done(function() {
                     $('#' + target_id).remove();
                 })
-                .fail(function (xhr, textStatus, error) {
+                .fail(function(xhr, textStatus, error) {
                     alert('failed : ' + error);
                 });
-            }
-        });
+        }
     });
+});
 </script>
 {% endblock %}
 
