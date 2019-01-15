@@ -8,6 +8,7 @@ django = "*"
 "django-bootstrap3" = "*"
 djangorestframework = "*"
 pillow = "*"
+easy-thumbnails = "*"
 
 [dev-packages]
 
