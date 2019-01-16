@@ -61,6 +61,26 @@ class PostDeleteView(DeleteView):
 post_delete = PostDeleteView.as_view()
 
 
+class CommentListView(ListView):
+    model = Comment
+
+    def get_queryset(self):
+        # super() 가 없을 경우,
+        # get_queryset 이 재귀함수로 실행되어 스택오버플로우 발생
+        qs = super().get_queryset()
+        # qs.filter 로 post_pk 값을 post__id 로 qs 변수에 할당
+        # 모든 comment 를 보여주는 것이 아닌
+        #  post id 에 해당하는 comment 만 가져옴
+        qs = qs.filter(post__id=self.kwargs['post_pk'])
+        # return 되는 값은 해당 post 에 해당하는 comment 들
+        return qs
+
+
+# commentListView 를 urls.py 에서보다
+# views.py 에서 정의하는 것이 보기 편하여 이와 같이 정의
+comment_list = CommentListView.as_view()
+
+
 class CommentCreateView(CreateView):
     model = Comment
     form_class = CommentForm
