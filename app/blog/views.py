@@ -72,6 +72,10 @@ class CommentListView(ListView):
         # 모든 comment 를 보여주는 것이 아닌
         #  post id 에 해당하는 comment 만 가져옴
         qs = qs.filter(post__id=self.kwargs['post_pk'])
+
+        latest_comment_id = self.request.GET.get('latest_comment_id', None)
+        if latest_comment_id:
+            qs = qs.filter(id__gt=latest_comment_id)
         # return 되는 값은 해당 post 에 해당하는 comment 들
         return qs
 
