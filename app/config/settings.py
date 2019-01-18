@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'blog',
+    'accounts',
     'bootstrap3',
     'rest_framework',
     'easy_thumbnails',
