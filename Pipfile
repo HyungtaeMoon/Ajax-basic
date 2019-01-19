@@ -9,6 +9,7 @@ django = "*"
 djangorestframework = "*"
 pillow = "*"
 easy-thumbnails = "*"
+django-extensions = "*"
 
 [dev-packages]
 
