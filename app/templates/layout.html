@@ -1,178 +1,178 @@
 {% load static %}
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-            <title>FrontEnd Basic</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" />
-    </head>
-        {% block extra_head %}{% endblock %}
-    <body>
-        <nav class="navbar navbar-default">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+<head>
+    <meta charset="utf-8">
+    <title>FrontEnd Basic</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" />
+</head>
+{% block extra_head %}{% endblock %}
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{% url 'blog:index' %}">FrontEnd Tutorial</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-              <ul class="nav navbar-nav">
+            </button>
+            <a class="navbar-brand" href="{% url 'blog:index' %}">FrontEnd Tutorial</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
                 <li class="active"><a href="{% url 'blog:index'%}">Blog</a></li>
-              </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if not user.is_authenticated %}
-                        <li><a href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
-                        <li><a href="{% url "accounts:signup" %}">회원가입</a></li>
-                    {% else %}
-                        <li><a href="{% url "accounts:profile" %}">프로필</a></li>
-{#                        ?next={{ request.path }} 를 설정함으로 인해서 현재 페이지에 머무를 수 있음 #}
-{#                          예를들어, localhost/3/ 에서 로그아웃하면 액션은 로그아웃, 경로는 localhost/3 에 그대로 머무름 #}
-                        <li><a href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-          </div>
-        </nav>
-
-        {% block content %}
-        {% endblock %}
-
-        <div class="container">
-            <hr/>
-
-            <footer>
-         <p>2019 &copy; <a href="#" target="_blank">Copy right</a></p>
-            </footer>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
+                    <li><a href="{% url "accounts:signup" %}">회원가입</a></li>
+                {% else %}
+                    <li><a href="{% url "accounts:profile" %}">프로필</a></li>
+                    {#                        ?next={{ request.path }} 를 설정함으로 인해서 현재 페이지에 머무를 수 있음 #}
+                    {#                          예를들어, localhost/3/ 에서 로그아웃하면 액션은 로그아웃, 경로는 localhost/3 에 그대로 머무름 #}
+                    <li><a href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
+                {% endif %}
+            </ul>
         </div>
+    </div>
+</nav>
 
-        <script src="{% static "jquery/dist/jquery.min.js" %}"></script>
-        <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
-        <script src="{% static "blog/jquery.csrf.js" %}"></script>
-        <script src="{% static "underscore/underscore-min.js" %}"></script>
-        <script src="{% static "jquery-form/dist/jquery.form.min.js" %}"></script>
+{% block content %}
+{% endblock %}
 
-        <hr/>
-    {% block extra_body %}
-    {% endblock %}
-        <script>
-            $(document).on('click', '.modal-form-btn', function(e) {
-                e.preventDefault();
+<div class="container">
+    <hr/>
 
-                var action_url = $(this).attr('href');
-                var target_id = $(this).data('target-id');
+    <footer>
+        <p>2019 &copy; <a href="#" target="_blank">Copy right</a></p>
+    </footer>
+</div>
 
-                $.get(action_url)
-                    .done(function(form_html) {
-                        var $modal = $('#modal-form-modal');
-                        $modal.find('.modal-body').html(form_html);
-                        $form = $modal.find('.modal-body form');
-                        $form.attr('action', action_url);
+<script src="{% static "jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+<script src="{% static "blog/jquery.csrf.js" %}"></script>
+<script src="{% static "underscore/underscore-min.js" %}"></script>
+<script src="{% static "jquery-form/dist/jquery.form.min.js" %}"></script>
 
-                        if ( target_id ) {
-                            $form.attr('data-target-id', target_id); // modal form에 data-target-id를 기록
-                        }
-                        else {
-                            $form.removeData('target-id'); // modal창이 뜰때마다 form태그가 새로이 지정되어서 불필요
-                        }
+<hr/>
+{% block extra_body %}
+{% endblock %}
+<script>
+    $(document).on('click', '.modal-form-btn', function(e) {
+        e.preventDefault();
 
-                        $modal.on('shown.bs.modal', function(e) {
-                            $(this).find('textarea:first').focus();
-                        });
+        var action_url = $(this).attr('href');
+        var target_id = $(this).data('target-id');
 
-                        $modal.modal();
-                    })
-                    .fail(function(xhr, textStatus, error) {
-                        alert('failed : ' + error);
-                    });
+        $.get(action_url)
+            .done(function(form_html) {
+                var $modal = $('#modal-form-modal');
+                $modal.find('.modal-body').html(form_html);
+                $form = $modal.find('.modal-body form');
+                $form.attr('action', action_url);
 
-                // $('#comment-form-modal').modal();
-            });
-
-            $(document).on('submit', '#modal-form-modal form', function(e) {
-                e.preventDefault();
-
-                var $form = $(this);
-                var $submit = $form.find('[type=submit]');
-
-                $submit.prop('disabled', true);
-
-                $form.ajaxSubmit({
-                    success: function(response, statusText, xhr, $form) {
-                        var html = response;
-
-                        var $resp = $(html);
-                        var target_id = $form.data('target-id');
-
-                        console.log(html);
-
-                        if ( $resp.find('.has-error').length > 0 ) {
-                            // validation 에러일 경우, 에러 HTML 응답
-                            // form 태그의 속성정보는 그대로 유지하고, 필드 HTML 만 변경
-                            var fields_html = $resp.html();
-                            $('#modal-form-modal .modal-body form').html(fields_html);
-                        }
-                        else {
-                            if ( target_id ) {
-                                $('#' + target_id).html($resp.html());
-                            }
-                            else {
-                                $resp.prependTo('#comment-list');
-                            }
-
-                            $('#modal-form-modal').modal('hide');
-                            $form[0].reset();
-                        }
-                    },
-                    error: function(xhr, textStatus, error) {
-                        alert('failed : ' + error);
-                    },
-                    complete: function(xhr, textStatus) {
-                    }
-                });
-            });
-
-
-            $(document).on('click', '.ajax-post-confirm', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-                var target_id = $(this).data('target-id');
-                var message = $(this).data('message');
-
-                if ( confirm(message) ) {
-                    $.post(url)
-                        .done(function() {
-                            $('#' + target_id).remove();
-                        })
-                        .fail(function(xhr, textStatus, error) {
-                            alert('failed : ' + error);
-                        });
+                if ( target_id ) {
+                    $form.attr('data-target-id', target_id); // modal form에 data-target-id를 기록
                 }
+                else {
+                    $form.removeData('target-id'); // modal창이 뜰때마다 form태그가 새로이 지정되어서 불필요
+                }
+
+                $modal.on('shown.bs.modal', function(e) {
+                    $(this).find('textarea:first').focus();
+                });
+
+                $modal.modal();
+            })
+            .fail(function(xhr, textStatus, error) {
+                alert('failed : ' + error);
             });
-        </script>
 
-        <div class="modal fade" id="modal-form-modal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Comment Form</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ...<br/>
-                        ...<br/>
-                        ...<br/>
-                        ...<br/>
-                    </div>
-                </div>
+        // $('#comment-form-modal').modal();
+    });
 
+    $(document).on('submit', '#modal-form-modal form', function(e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        var $submit = $form.find('[type=submit]');
+
+        $submit.prop('disabled', true);
+
+        $form.ajaxSubmit({
+            success: function(response, statusText, xhr, $form) {
+                var html = response;
+
+                var $resp = $(html);
+                var target_id = $form.data('target-id');
+
+                console.log(html);
+
+                if ( $resp.find('.has-error').length > 0 ) {
+                    // validation 에러일 경우, 에러 HTML 응답
+                    // form 태그의 속성정보는 그대로 유지하고, 필드 HTML 만 변경
+                    var fields_html = $resp.html();
+                    $('#modal-form-modal .modal-body form').html(fields_html);
+                }
+                else {
+                    if ( target_id ) {
+                        $('#' + target_id).html($resp.html());
+                    }
+                    else {
+                        $resp.prependTo('#comment-list');
+                    }
+
+                    $('#modal-form-modal').modal('hide');
+                    $form[0].reset();
+                }
+            },
+            error: function(xhr, textStatus, error) {
+                alert('failed : ' + error);
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+    });
+
+
+    $(document).on('click', '.ajax-post-confirm', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+        var target_id = $(this).data('target-id');
+        var message = $(this).data('message');
+
+        if ( confirm(message) ) {
+            $.post(url)
+                .done(function() {
+                    $('#' + target_id).remove();
+                })
+                .fail(function(xhr, textStatus, error) {
+                    alert('failed : ' + error);
+                });
+        }
+    });
+</script>
+
+<div class="modal fade" id="modal-form-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Comment Form</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...<br/>
+                ...<br/>
+                ...<br/>
+                ...<br/>
             </div>
         </div>
-    </body>
+
+    </div>
+</div>
+</body>
 </html>

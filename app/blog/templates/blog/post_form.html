@@ -2,15 +2,15 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <form action="" method="POST">
-                {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="" method="POST">
+                    {% csrf_token %}
                     {% bootstrap_form form %}
-                <input type="submit" value="등록하기" class="btn btn-primary">
-            </form>
+                    <input type="submit" value="등록하기" class="btn btn-primary">
+                </form>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

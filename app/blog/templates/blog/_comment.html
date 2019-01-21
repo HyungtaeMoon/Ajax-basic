@@ -9,13 +9,13 @@
     {% endif %}
 
     <div class="media-body">
-    {#    <h4 class="media-heading">Media heading</h4>#}
+        {#    <h4 class="media-heading">Media heading</h4>#}
 
         <p>{{ comment.message }}</p>
         &dash;
         <a href="{% url "blog:comment_edit" comment.post.pk comment.pk %}" class="modal-form-btn"
-                    data-target-id="comment-{{ comment.pk }}"></a>
-            <small>{{ comment.updated_at }}</small>
+           data-target-id="comment-{{ comment.pk }}"></a>
+        <small>{{ comment.updated_at }}</small>
 
         <a href="{% url "blog:comment_delete" comment.post.pk comment.pk %}"
            class="ajax-post-confirm"
