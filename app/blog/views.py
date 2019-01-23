@@ -3,7 +3,6 @@ from django.shortcuts import render, get_object_or_404, resolve_url
 from django.template.defaultfilters import truncatewords
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
-from rest_framework import permissions
 from rest_framework.renderers import JSONRenderer
 
 from .forms import CommentForm

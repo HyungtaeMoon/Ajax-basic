@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     'blog',
     'accounts',
+    'mychart',
     'bootstrap3',
     'rest_framework',
     'easy_thumbnails',
