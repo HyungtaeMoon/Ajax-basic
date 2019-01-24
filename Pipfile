@@ -10,6 +10,8 @@ djangorestframework = "*"
 pillow = "*"
 easy-thumbnails = "*"
 django-extensions = "*"
+requests = "*"
+"beautifulsoup4" = "*"
 
 [dev-packages]
 
