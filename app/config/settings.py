@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'accounts',
     'mychart',
     'bootstrap3',
+    # install django-chartjs
+    'chartjs',
     'rest_framework',
     'easy_thumbnails',
     'django_extensions',
