@@ -12,6 +12,7 @@ easy-thumbnails = "*"
 django-extensions = "*"
 requests = "*"
 "beautifulsoup4" = "*"
+django-chartjs = "*"
 
 [dev-packages]
 
