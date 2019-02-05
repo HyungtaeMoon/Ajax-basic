@@ -14,7 +14,17 @@ class PostListView(ListView):
     model = Post
     paginate_by = 10
 
+    # ListView 에서 객체에 대한 ORM 을 사용자가 구현하고 싶다면 get_queryset 을 오버라이딩하여 사용
+    # def get_queryset(self):
+    #     return Post.objects.all()[:3]
+
     def get_template_names(self):
+        """
+        1. post_list 에 최초로 접근하게 되면 blog/index.html 페이지를 보여주고,
+
+        2. ajax 비동기 처리로 구현한 무한스크롤 <id="post-list"> 이 작동할 경우,
+        blog/_post_list.html 의 {{ post.title }} 을 순서대로 보여줌.
+        """
         if self.request.is_ajax():
             return ['blog/_post_list.html']
         return ['blog/index.html']
